@@ -2,6 +2,7 @@ package com.example.pokedex.view
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.PersistableBundle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pokedex.R
@@ -12,43 +13,57 @@ import com.example.pokedex.domain.PokemonType
 class MainActivity : AppCompatActivity() {
     lateinit var recyclerView: RecyclerView
 
+    var pokemons = emptyList<Pokemon?>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         recyclerView = findViewById(R.id.rvPokemons)
 
-        Thread(Runnable {
-            loadPokemons(recyclerView)
-        }).start()
+        if (pokemons.isEmpty()) {
+            Thread(Runnable {
+                loadPokemons(recyclerView)
+            }).start()
+
+        } else {
+            loadRecylerView()
+        }
     }
+    
 
     private fun loadPokemons(recyclerView: RecyclerView) {
         val pokemonsApiResult = PokemonRepository.listPokemons()
 
-        val pokemons: List<Pokemon?> = pokemonsApiResult?.results?.map { pokemonResult ->
-            val number = pokemonResult.url
-                .replace("https://pokeapi.co/api/v2/pokemon/", "")
-                .replace("/", "").toInt()
+        pokemonsApiResult?.results?.let {
+            pokemons = it.map { pokemonResult ->
+                val number = pokemonResult.url
+                    .replace("https://pokeapi.co/api/v2/pokemon/", "")
+                    .replace("/", "").toInt()
 
-            val pokemonApiResult = PokemonRepository.getPokemon(number)
+                val pokemonApiResult = PokemonRepository.getPokemon(number)
 
-            pokemonApiResult?.let { apiResult ->
-                Pokemon(
-                    apiResult.id,
-                    apiResult.name,
-                    apiResult.types.map { typeSlot ->
-                        typeSlot.type
-                    }
-                )
+                pokemonApiResult?.let {
+                    Pokemon(
+                        pokemonApiResult.id,
+                        pokemonApiResult.name,
+                        pokemonApiResult.types.map { type->
+                            type.type
+                        }
+                    )
+                }
             }
-        }?.filterNotNull() ?: emptyList()
+        }
 
-        val layoutManager = LinearLayoutManager(this)
 
         recyclerView.post {
-            recyclerView.layoutManager = layoutManager
-            recyclerView.adapter = PokemonAdapter(pokemons)
+            loadRecylerView()
         }
+    }
+
+    private fun loadRecylerView() {
+
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.adapter = PokemonAdapter(pokemons)
     }
 }
