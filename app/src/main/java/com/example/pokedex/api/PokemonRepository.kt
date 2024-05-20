@@ -1,6 +1,7 @@
 package com.example.pokedex.api
 
 import android.util.Log
+import com.example.pokedex.api.model.PokemonApiResult
 import com.example.pokedex.api.model.PokemonsApiResult
 import retrofit2.Call
 import retrofit2.Callback
@@ -20,10 +21,15 @@ object PokemonRepository {
         service = retrofit.create(PokemonService::class.java)
     }
 
-    fun getPokemon(number: Int): PokemonsApiResult? {
-        val call = service.listPokemons(number)
+    fun listPokemons(limit: Int = 151): PokemonsApiResult? {
+        val call = service.listPokemons(limit)
 
         return call.execute().body()
-//
+    }
+
+    fun getPokemon(number: Int): PokemonApiResult? {
+        val call = service.getPokemon(number)
+
+        return call.execute().body()
     }
 }
