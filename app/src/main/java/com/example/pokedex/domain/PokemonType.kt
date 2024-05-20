@@ -1,2 +1,5 @@
-package com.example.pokedex.domain 
+package com.example.pokedex.domain
 
+data class PokemonType(
+    val name: String
+)
