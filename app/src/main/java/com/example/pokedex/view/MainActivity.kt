@@ -2,17 +2,14 @@ package com.example.pokedex.view
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.PersistableBundle
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pokedex.R
 import com.example.pokedex.api.PokemonRepository
 import com.example.pokedex.domain.Pokemon
-import com.example.pokedex.domain.PokemonType
 
 class MainActivity : AppCompatActivity() {
     lateinit var recyclerView: RecyclerView
-
     var pokemons = emptyList<Pokemon?>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,16 +20,14 @@ class MainActivity : AppCompatActivity() {
 
         if (pokemons.isEmpty()) {
             Thread(Runnable {
-                loadPokemons(recyclerView)
+                loadPokemons()
             }).start()
-
         } else {
-            loadRecylerView()
+            loadRecyclerView()
         }
     }
-    
 
-    private fun loadPokemons(recyclerView: RecyclerView) {
+    private fun loadPokemons() {
         val pokemonsApiResult = PokemonRepository.listPokemons()
 
         pokemonsApiResult?.results?.let {
@@ -55,15 +50,13 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-
-        recyclerView.post {
-            loadRecylerView()
+        runOnUiThread {
+            loadRecyclerView()
         }
     }
 
-    private fun loadRecylerView() {
-
-        recyclerView.layoutManager = LinearLayoutManager(this)
+    private fun loadRecyclerView() {
+        recyclerView.layoutManager = GridLayoutManager(this, 2) // Set the number of columns to 2
         recyclerView.adapter = PokemonAdapter(pokemons)
     }
 }

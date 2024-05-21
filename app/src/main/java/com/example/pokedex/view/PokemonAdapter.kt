@@ -36,7 +36,6 @@ class PokemonAdapter(
                 val tvNumber = findViewById<TextView>(R.id.tvNumber)
                 val tvName = findViewById<TextView>(R.id.tvName)
                 val tvType1 = findViewById<TextView>(R.id.tvType1)
-                val tvType2 = findViewById<TextView>(R.id.tvType2)
 
 
 
@@ -51,16 +50,6 @@ class PokemonAdapter(
                         ) else it.toString()
                     }
 
-                    if (item.types.size > 1 ) {
-                        tvType2.visibility = View.VISIBLE
-                        tvType2.text = item.types[1].name.replaceFirstChar {
-                            if (it.isLowerCase()) it.titlecase(
-                                Locale.getDefault()
-                            ) else it.toString()
-                        }
-                    } else {
-                        tvType2.visibility = View.GONE
-                    }
                 }
 
 
