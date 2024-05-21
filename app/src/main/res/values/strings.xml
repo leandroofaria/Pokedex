@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Pokedex</string>
+    <string name="cadastrar_novo">Cadastrar Novo</string>
 </resources>
