@@ -1,12 +1,11 @@
-package com.example.pokedex.view
+package com.example.pokedex
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.example.pokedex.R
 
-class RegisterFavoriteActivity : AppCompatActivity() {
+class SignupActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_register_favorite)
+        setContentView(R.layout.activity_signup)
     }
 }
