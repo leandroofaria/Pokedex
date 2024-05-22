@@ -9,11 +9,13 @@
         android:id="@+id/etPokemonName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Nome do Pokémon"/>
+        android:hint="Nome do Pokémon"
+        android:inputType="text" />
 
     <EditText
         android:id="@+id/etPokemonType"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Tipo do Pokémon"/>
+        android:hint="Tipo do Pokémon"
+        android:inputType="text" />
 </LinearLayout>
